@@ -2,22 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Cool To-Do List</title>
+  <title>To-Do App</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-  <div class="container">
-    <h1>✨ My Tasks</h1>
+  <!-- Semantic structure -->
+  <header>
+    <h1>📝 To-Do List</h1>
+  </header>
 
-    <div class="top-bar">
-      <input type="text" id="taskInput" placeholder="Add a task...">
-      <button id="addBtn">+</button>
-      <button id="modeBtn">🌙</button>
-    </div>
+  <!-- INTRODUCTION TEXT -->
+  <p class="intro">
+    This To-Do List App helps you organize your daily tasks easily. 
+    You can add tasks, mark them as completed, delete them, and switch to dark mode for a better viewing experience.
+  </p>
+
+  <main class="container">
+
+    <!-- FORM -->
+    <form id="taskForm">
+      <input type="text" id="taskInput" placeholder="Enter task">
+      <button type="submit">Add</button>
+      <button type="button" id="modeBtn">🌙</button>
+    </form>
+
+    <!-- LINK -->
+    <p>
+      Visit 
+      <a href="https://www.google.com" target="_blank">Google</a>
+    </p>
+
+    <!-- IMAGE -->
+    <img src="https://cdn-icons-png.flaticon.com/512/1828/1828817.png" width="50" alt="To-do icon">
 
     <ul id="taskList"></ul>
-  </div>
+
+  </main>
+
+  <footer>
+    <p>© 2026 To-Do App</p>
+  </footer>
 
   <script src="script.js"></script>
 </body>

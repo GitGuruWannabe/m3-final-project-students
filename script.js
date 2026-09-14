@@ -1,136 +1,85 @@
+// Array to store tasks
 let tasks = [];
 
-document.addEventListener("DOMContentLoaded", () => {
-    const addBtn = document.getElementById("addBtn");
-    const taskInput = document.getElementById("taskInput");
-    const modeBtn = document.getElementById("modeBtn");
+// Load saved tasks
+window.onload = function () {
+  const saved = localStorage.getItem("tasks");
 
-    // Load saved tasks
-    try {
-        const savedTasks = localStorage.getItem("tasks");
-
-        if (savedTasks) {
-            tasks = JSON.parse(savedTasks);
-
-            // Make sure the saved data is actually an array
-            if (!Array.isArray(tasks)) {
-                tasks = [];
-            }
-        }
-    } catch (error) {
-        console.error("Could not load tasks:", error);
-        tasks = [];
-    }
-
+  if (saved) {
+    tasks = JSON.parse(saved);
     renderTasks();
+  }
+};
 
-    // Add task button
-    addBtn.addEventListener("click", addTask);
-
-    // Press Enter to add task
-    taskInput.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
-            addTask();
-        }
-    });
-
-    // Toggle dark mode
-    modeBtn.addEventListener("click", () => {
-        document.body.classList.toggle("dark");
-
-        // Remember dark mode
-        localStorage.setItem(
-            "darkMode",
-            document.body.classList.contains("dark")
-        );
-    });
-
-    // Restore dark mode
-    if (localStorage.getItem("darkMode") === "true") {
-        document.body.classList.add("dark");
-    }
+// Event handling (submit form)
+document.getElementById("taskForm").addEventListener("submit", function(e){
+  e.preventDefault(); // prevent reload
+  addTask();
 });
 
+// Dark mode button
+document.getElementById("modeBtn").addEventListener("click", function(){
+  document.body.classList.toggle("dark");
+});
 
-// Add a new task
+// Function to add task
 function addTask() {
-    const input = document.getElementById("taskInput");
-    const text = input.value.trim();
+  const input = document.getElementById("taskInput");
+  let text = input.value.trim(); // string manipulation
 
-    // Don't add empty tasks
-    if (!text) {
-        return;
-    }
+  if (text === "") return; // condition
 
-    tasks.push({
-        text: text,
-        completed: false
-    });
+  tasks.push({
+    text: text.toUpperCase(), // string manipulation
+    completed: false
+  });
 
-    input.value = "";
-
-    saveTasks();
-    renderTasks();
-
-    input.focus();
+  input.value = "";
+  saveTasks();
+  renderTasks();
 }
 
-
-// Display tasks
+// Function to render tasks
 function renderTasks() {
-    const list = document.getElementById("taskList");
+  const list = document.getElementById("taskList");
+  list.innerHTML = "";
 
-    if (!list) {
-        console.error("Element #taskList was not found.");
-        return;
+  // Loop
+  tasks.forEach(function(task, index){
+
+    const li = document.createElement("li");
+
+    const span = document.createElement("span");
+    span.innerText = task.text;
+
+    if (task.completed) {
+      span.classList.add("completed"); // condition
     }
 
-    list.innerHTML = "";
-
-    tasks.forEach((task, index) => {
-        const li = document.createElement("li");
-
-        // Task text
-        const span = document.createElement("span");
-        span.textContent = task.text;
-
-        if (task.completed) {
-            span.classList.add("completed");
-        }
-
-        // Toggle completed
-        span.addEventListener("click", () => {
-            tasks[index].completed = !tasks[index].completed;
-
-            saveTasks();
-            renderTasks();
-        });
-
-        // Delete button
-        const deleteBtn = document.createElement("button");
-        deleteBtn.textContent = "❌";
-        deleteBtn.type = "button";
-
-        deleteBtn.addEventListener("click", () => {
-            tasks.splice(index, 1);
-
-            saveTasks();
-            renderTasks();
-        });
-
-        li.appendChild(span);
-        li.appendChild(deleteBtn);
-
-        list.appendChild(li);
+    // Click event
+    span.addEventListener("click", function(){
+      task.completed = !task.completed;
+      saveTasks();
+      renderTasks();
     });
+
+    // Delete button
+    const btn = document.createElement("button");
+    btn.innerText = "X";
+
+    btn.addEventListener("click", function(){
+      tasks.splice(index, 1);
+      saveTasks();
+      renderTasks();
+    });
+
+    li.appendChild(span);
+    li.appendChild(btn);
+    list.appendChild(li);
+  });
 }
 
-
-// Save tasks
+// Save to localStorage
 function saveTasks() {
-    try {
-        localStorage.setItem("tasks", JSON.stringify(tasks));
-    } catch (error) {
-        console.error("Could not save tasks:", error);
-    }
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 }
