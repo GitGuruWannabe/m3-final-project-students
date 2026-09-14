@@ -1,50 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>To-Do App</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Converter</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-  <header>
-    <h1>📝 To-Do List</h1>
-  </header>
+    <header>
+        <h1>Temperature Converter Pro</h1>
+        <p>Convert units and track your history instantly.</p>
+    </header>
 
-  <!-- INTRO -->
-  <p class="intro">
-    This To-Do List App helps you organize your daily tasks easily.
-    You can add, complete, and delete tasks, and also switch dark mode.
-  </p>
+    <main class="container">
+        <!-- Card 1: Converter Form -->
+        <section class="card">
+            <h2>Convert Unit</h2>
+            <form id="tempForm">
+                <div class="input-group">
+                    <label for="temperature">Temperature Value:</label>
+                    <input type="number" id="temperature" placeholder="e.g. 100" step="any" required>
+                </div>
 
-  <main class="container">
+                <div class="row">
+                    <div class="input-group">
+                        <label for="unitFrom">From:</label>
+                        <select id="unitFrom">
+                            <option value="C">Celsius (°C)</option>
+                            <option value="F">Fahrenheit (°F)</option>
+                            <option value="K">Kelvin (K)</option>
+                        </select>
+                    </div>
 
-    <form id="taskForm">
-      <input type="text" id="taskInput" placeholder="Enter task" required>
-      <button type="submit">Add</button>
-      <button type="button" id="modeBtn">🌙</button>
-    </form>
+                    <div class="input-group">
+                        <label for="unitTo">To:</label>
+                        <select id="unitTo">
+                            <option value="F">Fahrenheit (°F)</option>
+                            <option value="C">Celsius (°C)</option>
+                            <option value="K">Kelvin (K)</option>
+                        </select>
+                    </div>
+                </div>
 
-    <p>
-      Visit 
-      <a href="https://www.google.com" target="_blank">Google</a>
-    </p>
+                <button type="submit" id="convertBtn">Convert Now</button>
+            </form>
 
-    <img 
-      src="https://cdn-icons-png.flaticon.com/512/1828/1828817.png" 
-      width="50" 
-      alt="To-do icon">
+            <div id="resultBox" class="result-box">
+                <p id="resultText">Result will appear here...</p>
+            </div>
+        </section>
 
-    <ul id="taskList"></ul>
+        <!-- Card 2: History Log -->
+        <section class="card">
+            <div class="history-header">
+                <h2>Conversion History</h2>
+                <button id="clearBtn" class="secondary-btn">Clear</button>
+            </div>
+            <ul id="historyList" class="history-list">
+                <li class="empty-msg">No history recorded yet.</li>
+            </ul>
+        </section>
+    </main>
 
-  </main>
+    <footer>
+        <p>M.3 Web Development Final Project | Sci30113</p>
+    </footer>
 
-  <footer>
-    <p>© 2026 To-Do App</p>
-  </footer>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

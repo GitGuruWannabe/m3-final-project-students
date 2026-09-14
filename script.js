@@ -1,81 +1,95 @@
-let tasks = [];
+// Student Names: [Add Group Members Here]
+// Class: M.3 | Subject: Sci30113
 
-// Load saved tasks
-window.onload = function () {
-  const saved = localStorage.getItem("tasks");
+// Array for storing calculation objects
+let historyData = [];
 
-  if (saved) {
-    tasks = JSON.parse(saved);
-  }
+// DOM Element References
+const tempForm = document.getElementById('tempForm');
+const tempInput = document.getElementById('temperature');
+const unitFromSelect = document.getElementById('unitFrom');
+const unitToSelect = document.getElementById('unitTo');
+const resultText = document.getElementById('resultText');
+const historyList = document.getElementById('historyList');
+const clearBtn = document.getElementById('clearBtn');
 
-  renderTasks();
-};
+// 1. Temperature Calculation Logic
+function calculateTemperature(val, from, to) {
+    let celsius;
 
-// Form submit
-document.getElementById("taskForm").addEventListener("submit", function (e) {
-  e.preventDefault();
-  addTask();
-});
-
-// Dark mode
-document.getElementById("modeBtn").addEventListener("click", function () {
-  document.body.classList.toggle("dark");
-});
-
-// Add task
-function addTask() {
-  const input = document.getElementById("taskInput");
-  const text = input.value.trim();
-
-  if (text === "") return;
-
-  tasks.push({
-    text: text.toUpperCase(),
-    completed: false
-  });
-
-  input.value = "";
-  saveTasks();
-  renderTasks();
-}
-
-// Render tasks
-function renderTasks() {
-  const list = document.getElementById("taskList");
-  list.innerHTML = "";
-
-  tasks.forEach((task, index) => {
-    const li = document.createElement("li");
-
-    const span = document.createElement("span");
-    span.innerText = task.text;
-
-    if (task.completed) {
-      span.classList.add("completed");
+    // Convert input to Celsius first
+    if (from === 'C') {
+        celsius = val;
+    } else if (from === 'F') {
+        celsius = (val - 32) * (5 / 9);
+    } else if (from === 'K') {
+        celsius = val - 273.15;
     }
 
-    span.addEventListener("click", function () {
-      task.completed = !task.completed;
-      saveTasks();
-      renderTasks();
-    });
-
-    const btn = document.createElement("button");
-    btn.innerText = "🗑️";
-
-    btn.addEventListener("click", function () {
-      tasks.splice(index, 1);
-      saveTasks();
-      renderTasks();
-    });
-
-    li.appendChild(span);
-    li.appendChild(btn);
-    list.appendChild(li);
-  });
+    // Convert Celsius to Target Unit
+    if (to === 'C') {
+        return celsius;
+    } else if (to === 'F') {
+        return (celsius * (9 / 5)) + 32;
+    } else if (to === 'K') {
+        return celsius + 273.15;
+    }
 }
 
-// Save
-function saveTasks() {
-  localStorage.setItem("tasks", JSON.stringify(tasks));
+// 2. Render History List using For Loop
+function renderHistory() {
+    historyList.innerHTML = ''; // Clear current display
+
+    if (historyData.length === 0) {
+        historyList.innerHTML = '<li class="empty-msg">No history recorded yet.</li>';
+        return;
+    }
+
+    // Loop through history array
+    for (let i = 0; i < historyData.length; i++) {
+        const item = historyData[i];
+        const li = document.createElement('li');
+        li.textContent = `${item.input}°${item.from} ➔ ${item.output}°${item.to}`;
+        historyList.prepend(li); // Show newest first
+    }
 }
+
+// 3. Event Handling for Form Submission
+tempForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const inputValue = parseFloat(tempInput.value);
+    const fromUnit = unitFromSelect.value;
+    const toUnit = unitToSelect.value;
+
+    if (isNaN(inputValue)) {
+        resultText.textContent = "Please enter a valid number.";
+        return;
+    }
+
+    // Execute Calculation
+    const convertedVal = calculateTemperature(inputValue, fromUnit, toUnit);
+    const formattedResult = convertedVal.toFixed(2);
+
+    // Update Main Result Box
+    const resultString = `${inputValue} °${fromUnit} = ${formattedResult} °${toUnit}`;
+    resultText.textContent = resultString;
+
+    // Add Object to History Array
+    const logItem = {
+        input: inputValue,
+        from: fromUnit,
+        output: formattedResult,
+        to: toUnit
+    };
+    historyData.push(logItem);
+
+    // Refresh History UI
+    renderHistory();
+});
+
+// 4. Clear History Event
+clearBtn.addEventListener('click', function () {
+    historyData = [];
+    renderHistory();
+});
