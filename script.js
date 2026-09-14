@@ -1,85 +1,81 @@
-// Array to store tasks
 let tasks = [];
 
 // Load saved tasks
 window.onload = function () {
-    const saved = localStorage.getItem("tasks");
+  const saved = localStorage.getItem("tasks");
 
-    if (saved) {
-        tasks = JSON.parse(saved);
-        renderTasks();
-    }
+  if (saved) {
+    tasks = JSON.parse(saved);
+  }
+
+  renderTasks();
 };
 
-// Event handling (submit form)
+// Form submit
 document.getElementById("taskForm").addEventListener("submit", function (e) {
-    e.preventDefault(); // prevent reload
-    addTask();
+  e.preventDefault();
+  addTask();
 });
 
-// Dark mode button
+// Dark mode
 document.getElementById("modeBtn").addEventListener("click", function () {
-    document.body.classList.toggle("dark");
+  document.body.classList.toggle("dark");
 });
 
-// Function to add task
+// Add task
 function addTask() {
-    const input = document.getElementById("taskInput");
-    let text = input.value.trim(); // string manipulation
+  const input = document.getElementById("taskInput");
+  const text = input.value.trim();
 
-    if (text === "") return; // condition
+  if (text === "") return;
 
-    tasks.push({
-        text: text.toUpperCase(), // string manipulation
-        completed: false
-    });
+  tasks.push({
+    text: text.toUpperCase(),
+    completed: false
+  });
 
-    input.value = "";
-    saveTasks();
-    renderTasks();
+  input.value = "";
+  saveTasks();
+  renderTasks();
 }
 
-// Function to render tasks
+// Render tasks
 function renderTasks() {
-    const list = document.getElementById("taskList");
-    list.innerHTML = "";
+  const list = document.getElementById("taskList");
+  list.innerHTML = "";
 
-    // Loop
-    tasks.forEach(function (task, index) {
+  tasks.forEach((task, index) => {
+    const li = document.createElement("li");
 
-        const li = document.createElement("li");
+    const span = document.createElement("span");
+    span.innerText = task.text;
 
-        const span = document.createElement("span");
-        span.innerText = task.text;
+    if (task.completed) {
+      span.classList.add("completed");
+    }
 
-        if (task.completed) {
-            span.classList.add("completed"); // condition
-        }
-
-        // Click event
-        span.addEventListener("click", function () {
-            task.completed = !task.completed;
-            saveTasks();
-            renderTasks();
-        });
-
-        // Delete button
-        const btn = document.createElement("button");
-        btn.innerText = "X";
-
-        btn.addEventListener("click", function () {
-            tasks.splice(index, 1);
-            saveTasks();
-            renderTasks();
-        });
-
-        li.appendChild(span);
-        li.appendChild(btn);
-        list.appendChild(li);
+    span.addEventListener("click", function () {
+      task.completed = !task.completed;
+      saveTasks();
+      renderTasks();
     });
+
+    const btn = document.createElement("button");
+    btn.innerText = "🗑️";
+
+    btn.addEventListener("click", function () {
+      tasks.splice(index, 1);
+      saveTasks();
+      renderTasks();
+    });
+
+    li.appendChild(span);
+    li.appendChild(btn);
+    list.appendChild(li);
+  });
 }
 
-// Save to localStorage
+// Save
 function saveTasks() {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 }

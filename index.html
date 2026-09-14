@@ -1,52 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <title>To-Do App</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do App</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <!-- Semantic structure -->
-    <header>
-        <h1>📝 To-Do List</h1>
-    </header>
+  <header>
+    <h1>📝 To-Do List</h1>
+  </header>
 
-    <!-- INTRODUCTION TEXT -->
-    <p class="intro">
-        This To-Do List App helps you organize your daily tasks easily.
-        You can add tasks, mark them as completed, delete them, and switch to dark mode for a better viewing experience.
+  <!-- INTRO -->
+  <p class="intro">
+    This To-Do List App helps you organize your daily tasks easily.
+    You can add, complete, and delete tasks, and also switch dark mode.
+  </p>
+
+  <main class="container">
+
+    <form id="taskForm">
+      <input type="text" id="taskInput" placeholder="Enter task" required>
+      <button type="submit">Add</button>
+      <button type="button" id="modeBtn">🌙</button>
+    </form>
+
+    <p>
+      Visit 
+      <a href="https://www.google.com" target="_blank">Google</a>
     </p>
 
-    <main class="container">
+    <img 
+      src="https://cdn-icons-png.flaticon.com/512/1828/1828817.png" 
+      width="50" 
+      alt="To-do icon">
 
-        <!-- FORM -->
-        <form id="taskForm">
-            <input type="text" id="taskInput" placeholder="Enter task">
-            <button type="submit">Add</button>
-            <button type="button" id="modeBtn">🌙</button>
-        </form>
+    <ul id="taskList"></ul>
 
-        <!-- LINK -->
-        <p>
-            Visit
-            <a href="https://www.google.com" target="_blank">Google</a>
-        </p>
+  </main>
 
-        <!-- IMAGE -->
-        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828817.png" width="50" alt="To-do icon">
+  <footer>
+    <p>© 2026 To-Do App</p>
+  </footer>
 
-        <ul id="taskList"></ul>
-
-    </main>
-
-    <footer>
-        <p>© 2026 To-Do App</p>
-    </footer>
-
-    <script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
-
 </html>
